@@ -143,7 +143,37 @@ TODO
 
 ## Depth control
 
-TODO
+Depth control relies on transformers. Transformers is a dependency of diffusers for running controlnet, so
+you should have it installed already.
+
+```py
+from transformers import pipeline
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+from PIL import Image
+import numpy as np
+
+depth_estimator = pipeline('depth-estimation')
+
+image = Image.open('./images/stormtrooper.png')
+image = depth_estimator(image)['depth']
+image = np.array(image)
+image = image[:, :, None]
+image = np.concatenate([image, image, image], axis=2)
+image = Image.fromarray(image)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-depth",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("Stormtrooper's lecture", image).images[0]
+
+image.save('./images/stormtrooper_depth_out.png')
+```
 
 ## Normal map
 
