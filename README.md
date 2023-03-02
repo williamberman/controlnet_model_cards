@@ -230,8 +230,6 @@ image.save('./images/stormtrooper_depth_out.png')
 
 ## Normal map
 
-TODO
-
 ```py
 from PIL import Image
 from transformers import pipeline
