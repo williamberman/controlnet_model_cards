@@ -184,6 +184,12 @@ image = pipe("house", image).images[0]
 image.save('./images/house_seg_out.png')
 ```
 
+![house](images/house.png)
+
+![house_seg](images/house_seg.png)
+
+![house_seg_out](images/house_seg_out.png)
+
 ## Depth control
 
 Depth control relies on transformers. Transformers is a dependency of diffusers for running controlnet, so
