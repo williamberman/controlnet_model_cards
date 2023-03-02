@@ -4,9 +4,9 @@ Controlnet is an auxiliary model which augments pre-trained diffusion models wit
 
 Controlnet comes with multiple auxiliary models, each which allows a different type of conditioning
 
-The auxiliary conditioning is passed directly to the diffusers pipeline. If you want to process an image to create the auxiliary conditioning, external dependencies are required.
-
 Controlnet's auxiliary models are trained with stable diffusion 1.5. Experimentally, the auxiliary models can be used with other diffusion models such as dreamboothed stable diffusion.
+
+The auxiliary conditioning is passed directly to the diffusers pipeline. If you want to process an image to create the auxiliary conditioning, external dependencies are required.
 
 Some of the additional conditionings can be extracted from images via additional models. We extracted these
 additional models from the original controlnet repo into a separate package that can be found on [github](https://github.com/patrickvonplaten/human_pose.git).
