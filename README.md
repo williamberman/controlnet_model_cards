@@ -155,4 +155,40 @@ TODO
 
 ## HED Boundary
 
-TODO
+Install the additional controlnet models package.
+
+```sh
+$ pip install git+https://github.com/patrickvonplaten/human_pose.git
+```
+
+```py
+from PIL import Image
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+import torch
+from human_pose import HEDdetector
+
+hed = HEDdetector.from_pretrained('lllyasviel/ControlNet')
+
+image = Image.open('images/man.png')
+
+image = hed(image)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-hed",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("oil painting of handsome old man, masterpiece", image).images[0]
+
+image.save('images/man_hed_out.png')
+```
+
+![man](./images/man.png)
+
+![man_hed](./images/man_hed.png)
+
+![man_hed_out](./images/man_hed_out.png)
