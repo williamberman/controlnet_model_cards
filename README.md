@@ -139,7 +139,50 @@ image.save('images/chef_pose_out.png')
 
 ## Semantic Segmentation
 
-TODO
+```py
+from transformers import AutoImageProcessor, UperNetForSemanticSegmentation
+from PIL import Image
+import numpy as np
+from controlnet_utils import ade_palette
+import torch
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+
+image_processor = AutoImageProcessor.from_pretrained("openmmlab/upernet-convnext-small")
+image_segmentor = UperNetForSemanticSegmentation.from_pretrained("openmmlab/upernet-convnext-small")
+
+image = Image.open("./images/house.png").convert('RGB')
+
+pixel_values = image_processor(image, return_tensors="pt").pixel_values
+
+with torch.no_grad():
+  outputs = image_segmentor(pixel_values)
+
+seg = image_processor.post_process_semantic_segmentation(outputs, target_sizes=[image.size[::-1]])[0]
+
+color_seg = np.zeros((seg.shape[0], seg.shape[1], 3), dtype=np.uint8) # height, width, 3
+
+palette = np.array(ade_palette())
+
+for label, color in enumerate(palette):
+    color_seg[seg == label, :] = color
+
+color_seg = color_seg.astype(np.uint8)
+
+image = Image.fromarray(color_seg)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-seg",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("house", image).images[0]
+
+image.save('./images/house_seg_out.png')
+```
 
 ## Depth control
 
