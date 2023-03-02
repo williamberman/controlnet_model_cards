@@ -1,6 +1,6 @@
 # Controlnet
 
-Controlnet is an auxiliary model which augments pre-trained diffusion model with additional conditioning.
+Controlnet is an auxiliary model which augments pre-trained diffusion models with an additional conditioning.
 
 Controlnet comes with multiple auxiliary models, each which allows a different type of conditioning
 
