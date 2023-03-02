@@ -61,7 +61,7 @@ image.save('images/bird_canny_out.png')
 
 Install the additional controlnet models package.
 
-```
+```sh
 $ pip install git+https://github.com/patrickvonplaten/human_pose.git
 ```
 
@@ -91,9 +91,51 @@ image = pipe("room", image).images[0]
 image.save('images/room_mlsd_out.png')
 ```
 
+![room](./images/room.png)
+
+![room_mlsd](./images/room_mlsd.png)
+
+![room_mlsd_out](./images/room_mlsd_out.png)
+
 ## Pose estimation
 
-TODO
+Install the additional controlnet models package.
+
+```sh
+$ pip install git+https://github.com/patrickvonplaten/human_pose.git
+```
+
+```py
+from PIL import Image
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+import torch
+from human_pose import OpenposeDetector
+
+openpose = OpenposeDetector.from_pretrained('lllyasviel/ControlNet')
+
+image = Image.open('images/pose.png')
+
+image = openpose(image)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-openpose",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("chef in the kitchen", image).images[0]
+
+image.save('images/chef_pose_out.png')
+```
+
+![pose](./images/pose.png)
+
+![openpose](./images/openpose.png)
+
+![chef_pose_out](./images/chef_pose_out.png)
 
 ## Semantic Segmentation
 
