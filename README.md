@@ -139,6 +139,10 @@ image.save('images/chef_pose_out.png')
 
 ## Semantic Segmentation
 
+Semantic segmentation relies on transformers. Transformers is a 
+dependency of diffusers for running controlnet, so you should 
+have it installed already.
+
 ```py
 from transformers import AutoImageProcessor, UperNetForSemanticSegmentation
 from PIL import Image
