@@ -8,9 +8,12 @@ The auxiliary conditioning is passed directly to the diffusers pipeline. If you 
 
 Controlnet's auxiliary models are trained with stable diffusion 1.5. Experimentally, the auxiliary models can be used with other diffusion models such as dreamboothed stable diffusion.
 
+Some of the additional conditionings can be extracted from images via additional models. We extracted these
+additional models from the original controlnet repo into a separate package that can be found on [github](https://github.com/patrickvonplaten/human_pose.git).
+
 ## Canny edge detection
 
-Canny edge detection has a dependency on opencv
+Install opencv
 
 ```sh
 $ pip install opencv-contrib-python
@@ -56,7 +59,37 @@ image.save('images/bird_canny_out.png')
 
 ## M-LSD Straight line detection
 
-TODO
+Install the additional controlnet models package.
+
+```
+$ pip install git+https://github.com/patrickvonplaten/human_pose.git
+```
+
+```py
+from PIL import Image
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+import torch
+from human_pose import MLSDdetector
+
+mlsd = MLSDdetector.from_pretrained('lllyasviel/ControlNet')
+
+image = Image.open('images/room.png')
+
+image = mlsd(image)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-mlsd",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("room", image).images[0]
+
+image.save('images/room_mlsd_out.png')
+```
 
 ## Pose estimation
 
