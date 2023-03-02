@@ -228,6 +228,13 @@ image = pipe("Stormtrooper's lecture", image).images[0]
 image.save('./images/stormtrooper_depth_out.png')
 ```
 
+![stormtrooper](./images/stormtrooper.png)
+
+![stormtrooler_depth](./images/stormtrooper_depth.png)
+
+![stormtrooler_depth_out](./images/stormtrooper_depth_out.png)
+
+
 ## Normal map
 
 ```py
