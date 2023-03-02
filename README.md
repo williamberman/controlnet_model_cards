@@ -151,7 +151,43 @@ TODO
 
 ## Scribble
 
-TODO
+Install the additional controlnet models package.
+
+```sh
+$ pip install git+https://github.com/patrickvonplaten/human_pose.git
+```
+
+```py
+from PIL import Image
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+import torch
+from human_pose import HEDdetector
+
+hed = HEDdetector.from_pretrained('lllyasviel/ControlNet')
+
+image = Image.open('images/bag.png')
+
+image = hed(image, scribble=True)
+
+controlnet = ControlNetModel.from_pretrained(
+    "fusing/stable-diffusion-v1-5-controlnet-scribble",
+)
+
+pipe = StableDiffusionControlNetPipeline.from_pretrained(
+    "runwayml/stable-diffusion-v1-5", controlnet=controlnet, safety_checker=None
+)
+pipe.to('cuda')
+
+image = pipe("bag", image).images[0]
+
+image.save('images/bag_scribble_out.png')
+```
+
+![bag](./images/bag.png)
+
+![bag_scribble](./images/bag_scribble.png)
+
+![bag_scribble_out](./images/bag_scribble_out.png)
 
 ## HED Boundary
 
