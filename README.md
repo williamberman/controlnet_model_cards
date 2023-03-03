@@ -1,5 +1,10 @@
 ---
 license: openrail
+base_model: runwayml/stable-diffusion-v1-5
+tags:
+- art
+- controlnet
+- stable-diffusion
 ---
 
 # Controlnet
