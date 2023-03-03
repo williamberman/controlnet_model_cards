@@ -319,7 +319,7 @@ from PIL import Image
 from transformers import pipeline
 import numpy as np
 import cv2
-from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel, UniPCMultistepScheduler
 import torch
 
 image = Image.open("images/toy.png").convert("RGB")
@@ -449,7 +449,7 @@ $ pip install git+https://github.com/patrickvonplaten/controlnet_aux.git
 
 ```py
 from PIL import Image
-from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
+from diffusers import StableDiffusionControlNetPipeline, ControlNetModel, UniPCMultistepScheduler
 import torch
 from controlnet_aux import HEDdetector
 
